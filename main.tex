@@ -1,0 +1,50 @@
+% IMPORTANT! In order for the document to compile, one needs to use XeLaTeX or LuaLaTeX as compiler. This can be done in  Overleaf by Menu -> Settings -> Compiler -> Choose XeLaTeX/LuaLaTeX
+\documentclass[t,24pt]{beamer}
+
+\usepackage{KUstyle}
+
+\toplinje{Text at top} % The text at top. Remove the command if no text is desired
+
+\begin{document}
+
+% The first slide. One can for instance change the main title, the subtitle, speaker, KU-unit and date
+{
+\setbeamertemplate{background}{\includegraphics[width=\paperwidth,height=\paperheight]{KU/forside.pdf}}
+\begin{frame}
+    \begin{textblock*}{\textwidth}(0\textwidth,0.1\textheight)
+        \begin{beamercolorbox}[wd=6.3cm,ht=7.7cm,sep=0.5cm]{hvidbox}
+            \fontsize{4}{10}\fontfamily{ptm}\selectfont \textls[200]{UNIVERSITY OF COPENHAGEN}
+            \noindent\textcolor{KUrod}{\rule{5.3cm}{0.4pt}}
+        \end{beamercolorbox}
+    \end{textblock*}
+    \begin{textblock*}{\textwidth}(0\textwidth,0.1\textheight)
+        \begin{beamercolorbox}[wd=6.3cm,sep=0.5cm]{hvidbox}
+                \Large \textcolor{KUrod}{Meeting - Week 2}
+                \vspace{0.5cm}
+                \par
+                \large Progress, Challenges \& Next steps
+                \vspace{0.5cm}
+                \par
+                \textcolor{gray}{\scriptsize Simon Winther \& Hjalte Bjoernstrup, Department of Computer Science, University of Copenhagen (DIKU), \today.}
+        \end{beamercolorbox}
+    \end{textblock*}
+    \begin{textblock}{1}(6,11.44)
+        \includegraphics[width=1cm]{KU/KU-logo.png}
+    \end{textblock}
+\end{frame}
+}
+
+% ----------------------------------------------------
+%                       Slide 1
+% ----------------------------------------------------
+\begin{frame}[hoved]
+\frametitle{Questions?}
+\begin{enumerate}
+\item Is it permitted to stream while coding on platforms like Twitch or YouTube, not for providing help, but simply because it’s fun and motivating to stream while working on a project?
+\item Are we allowed to install missing PIP libraries, such as Hydra and other modules, if they are not found in the local environment, or should we ask for permission before doing so?
+\item 
+
+\end{enumerate}
+\end{frame}
+
+\end{document}

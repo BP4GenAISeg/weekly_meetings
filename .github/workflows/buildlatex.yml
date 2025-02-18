@@ -3,6 +3,8 @@ on:
   push:
     paths-ignore:
       - "**/weekly_meeting.pdf"
+  schedule:
+    - cron: '0 22 * * *'
 
 jobs:
   build_latex:
@@ -13,13 +15,24 @@ jobs:
         with:
           token: ${{ secrets.TOKEN }}
 
+      - name: Install Required Fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-liberation ttf-mscorefonts-installer
+          fc-cache -fv
+
+      - name: Refresh LuaLaTeX Font Cache
+        run: |
+          luaotfload-tool --update
+
       - name: Find and compile all LaTeX documents
         run: |
           for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
             if [[ -f "$dir/main.tex" ]]; then
               echo "🔍 Found main.tex in $dir"
               docker run --rm -v "$PWD/$dir:/work" --user "$(id -u):$(id -g)" -w /work texlive/texlive \
-                latexmk -lualatex -interaction=nonstopmode main.tex
+                latexmk -lualatex -interaction=nonstopmode main.tex \
+                -pdflatex="lualatex --shell-escape"
               mv "$dir/main.pdf" "$dir/weekly_meeting.pdf"
             else
               echo "⚠️ No main.tex found in $dir, skipping."

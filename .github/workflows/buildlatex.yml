@@ -21,7 +21,7 @@ jobs:
             if [[ -f "$dir/main.tex" ]]; then
               echo "🔍 Found main.tex in $dir"
               docker run --rm -v "$PWD/$dir:/work" -w /work --user root texlive/texlive bash -c "
-                apt-get update && apt-get install -y fonts-liberation ttf-mscorefonts-installer && \
+                apt-get update && apt-get install -y fonts-liberation fontconfig && \
                 fc-cache -fv && \
                 luaotfload-tool --update && \
                 latexmk -lualatex -interaction=nonstopmode main.tex"

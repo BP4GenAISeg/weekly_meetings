@@ -20,12 +20,17 @@ jobs:
           for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
             if [[ -f "$dir/main.tex" ]]; then
               echo "🔍 Found main.tex in $dir"
-              abs_path=$(realpath "$dir")  # Ensure absolute path
+              abs_path=$(realpath "$dir")
               docker run --rm -v "$abs_path:/work" -w /work --user root texlive/texlive bash -c "
-                echo '🔎 Checking files in /work:' && ls -l /work && \
-                apt-get update && apt-get install -y fonts-liberation fontconfig && \
+                echo '🔄 Updating packages and installing fonts...'
+                apt-get update -qq && \
+                apt-get install -y --no-install-recommends software-properties-common && \
+                add-apt-repository universe && \
+                echo 'ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true' | debconf-set-selections && \
+                apt-get install -y --no-install-recommends ttf-mscorefonts-installer && \
                 fc-cache -fv && \
                 luaotfload-tool --update && \
+                echo '🛠️ Compiling document...' && \
                 latexmk -lualatex -interaction=nonstopmode main.tex"
               mv "$dir/main.pdf" "$dir/weekly_meeting.pdf"
             else

@@ -20,12 +20,10 @@ jobs:
           for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
             if [[ -f "$dir/main.tex" ]]; then
               echo "🔍 Found main.tex in $dir"
-              docker run --rm -v "$PWD/$dir:/work" -w /work --user root texlive/texlive bash -c "
-                ls -l /work && \
+              abs_path=$(realpath "$dir")  # Ensure absolute path
+              docker run --rm -v "$abs_path:/work" -w /work --user root texlive/texlive bash -c "
+                echo '🔎 Checking files in /work:' && ls -l /work && \
                 apt-get update && apt-get install -y fonts-liberation fontconfig && \
-                mkdir -p /usr/share/fonts/truetype/msttcore && \
-                cd /usr/share/fonts/truetype/msttcore && \
-                curl -O https://archlinux.org/packages/extra/any/ttf-ms-fonts/download && \
                 fc-cache -fv && \
                 luaotfload-tool --update && \
                 latexmk -lualatex -interaction=nonstopmode main.tex"
@@ -34,6 +32,7 @@ jobs:
               echo "⚠️ No main.tex found in $dir, skipping."
             fi
           done
+
 
 
       - name: Upload PDFs

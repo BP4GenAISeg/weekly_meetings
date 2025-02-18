@@ -1,0 +1,210 @@
+% -------------------------------------
+%               Setup
+% -------------------------------------
+\documentclass[t, 24pt]{beamer}
+\usepackage{lipsum}
+\usepackage{listings} % for code
+\usepackage{etoolbox} % For \ifstrempty00
+\newcommand{\weekcount}{3} % \def\weekcount{3}
+
+% Setup > KU Setup
+\usepackage{KUstyle}
+\toplinje{Meeting | Week \weekcount} % The text at top. Remove the command if no text is desired
+
+% Code
+\usepackage{fancyvrb}
+\VerbatimEnvironment
+
+% -------------------------------------
+%               Code
+% -------------------------------------
+\definecolor{bgcolor}{RGB}{248,248,248} % Light gray background
+\definecolor{keywordcolor}{RGB}{0,0,160} % Dark blue keywords
+\definecolor{stringcolor}{RGB}{163,21,21} % Dark red strings
+\definecolor{commentcolor}{RGB}{0,128,0} % Dark green comments
+\definecolor{numbercolor}{RGB}{128,0,128} % Purple line numbers
+\definecolor{promptcolor}{RGB}{64,64,64} % Dark gray prompts
+
+% Custom style for Python code
+\lstdefinestyle{professionalPython}{
+    language=Python,
+    backgroundcolor=\color{bgcolor},
+    basicstyle=\linespread{1.1}\tiny\ttfamily,
+    keywordstyle=\color{keywordcolor}\bfseries,
+    commentstyle=\color{commentcolor}\itshape,
+    stringstyle=\color{stringcolor},
+    numberstyle=\tiny\color{numbercolor},
+    identifierstyle=\color{black},
+    tabsize=4,
+    showstringspaces=false,
+    numbers=left,
+    stepnumber=1,
+    numbersep=10pt,
+    frame=single,
+    framerule=0.5pt,
+    rulecolor=\color{gray},
+    breaklines=true,
+    captionpos=b,
+    xleftmargin=15pt,
+    xrightmargin=5pt,
+    aboveskip=10pt,
+    belowskip=-10pt,
+    morekeywords={def, return, class, from, import, as, if, elif, else, while, for, in, try, except, finally, with, yield, lambda, global, nonlocal, assert, pass, break, continue, raise},
+    literate=*{:}{{\textcolor{keywordcolor}{:}}}1,
+}
+
+
+% -------------------------------------
+% Command with question slides counter
+% -------------------------------------
+
+\newcounter{subjectNumber}
+\setcounter{subjectNumber}{0}
+
+\makeatletter
+\newcommand{\resetsubject}{%
+\stepcounter{subjectNumber}%
+\@ifundefined{c@currentQSlide\thesubjectNumber}{%
+\newcounter{currentQSlide\thesubjectNumber}%
+}{}%
+\setcounter{currentQSlide\thesubjectNumber}{0}%
+}
+
+\newcommand{\incrementSlideCnt}{%
+\stepcounter{currentQSlide\thesubjectNumber}%
+}
+
+\AtEndDocument{%
+\@tempcnta=1 \loop\ifnum\@tempcnta<\numexpr\value{subjectNumber}+1 \immediate\write\@auxout{%
+\string\@ifundefined{c@totalQSlide\the\@tempcnta}{%
+\string\newcounter{totalQSlide\the\@tempcnta}%
+}{}%
+\string\setcounter{totalQSlide\the\@tempcnta}{\the\value{currentQSlide\the\@tempcnta}}%
+}%
+\advance\@tempcnta by1 \repeat }
+\makeatother
+
+
+
+\newenvironment{numberedSlide}[2][]{%
+  \ifstrempty{#1}{%
+    % If no optional argument => just [hoved]
+    \begin{frame}[hoved]
+  }{%
+    % If there *is* an optional argument => [containsverbatim,hoved]
+    \begin{frame}[#1,hoved]
+  }%
+  \incrementSlideCnt
+  \frametitle{#2 (\arabic{currentQSlide\thesubjectNumber}/\arabic{totalQSlide\thesubjectNumber})}
+}{%
+  \end{frame}
+}
+
+
+%\newenvironment{numberedSlide}[1]{%
+%  \begin{frame}[hoved]
+%    \incrementSlideCnt
+%    \frametitle{#1 (\arabic{currentQSlide\thesubjectNumber}/\arabic{totalQSlide\thesubjectNumber})}
+%}{%
+%  \end{frame}
+%}
+
+
+% -------------------------------------
+%                Setup
+% -------------------------------------
+\resetsubject % Initialize the first subject
+
+% -------------------------------------
+%                TiKz
+% -------------------------------------
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+
+\tikzstyle{startstop}
+=
+[rectangle,
+rounded
+corners,
+minimum
+width=3.5cm,
+minimum
+height=1cm,
+text
+centered,
+draw=black,
+fill=blue!20]
+\tikzstyle{process}
+=
+[rectangle,
+minimum
+width=3.5cm,
+minimum
+height=1cm,
+text
+centered,
+draw=black,
+fill=green!20]
+\tikzstyle{arrow}
+=
+[thick,->,>=stealth]
+
+\begin{document}
+
+    % Intro slides.
+    { \setbeamertemplate{background}{\includegraphics[width=\paperwidth,height=\paperheight]{KU/forside.pdf}} \begin{frame}\begin{textblock*}{\textwidth}(0\textwidth,0.1\textheight) \begin{beamercolorbox}[wd=6.3cm,ht=7.7cm,sep=0.5cm]{hvidbox} \fontsize{4}{10}\fontfamily{ptm}\selectfont \textls[200]{UNIVERSITY OF COPENHAGEN} \noindent\textcolor{KUrod}{\rule{5.3cm}{0.4pt}}\end{beamercolorbox}\end{textblock*} \begin{textblock*}{\textwidth}(0\textwidth,0.1\textheight) \begin{beamercolorbox}[wd=6.3cm,sep=0.5cm]{hvidbox} \Large \textcolor{KUrod}{Meeting - Week \weekcount} \vspace{0.5cm} \par \large Progress, Challenges \& Next steps \vspace{0.5cm} \par \textcolor{gray}{\scriptsize Simon Winther \& Hjalte Bjoernstrup, Department of Computer Science, University of Copenhagen (DIKU), \today.}\end{beamercolorbox}\end{textblock*} \begin{textblock}{1}(6,11.44) \includegraphics[width=1cm]{KU/KU-logo.png}\end{textblock}\end{frame} }
+
+    % ----------------------------------------------------
+    %                       Slide 1
+    % ----------------------------------------------------
+    \begin{numberedSlide}{Questions?} 
+        Should we train a separate model for each organ (e.g., liver, brain, prostate) to maximize specialization, or would a single model trained on all datasets generalize well across different organs? Alternatively, would pretraining on multiple organs and fine-tuning per organ be a better approach?
+        \\~\\
+        The LiTS preprocessing script resizes images to 320×320 and creates three-channel
+        inputs using neighboring slices.
+        \begin{itemize}
+            \item Should we crop/resize our dataset to match this format, or can
+                we keep the original resolution?
+
+            \item How should we handle three-channel input if the number of slices
+                is not a multiple of 3?
+
+            \item Are there any strict formatting requirements we need to follow
+                for U-Net 3+?
+        \end{itemize}
+    \end{numberedSlide}
+
+    % ----------------------------------------------------
+    %                       Slide 2
+    % ----------------------------------------------------
+    \begin{numberedSlide}{Questions?} 
+        \textbf{Handling 4D NIfTI Files in U-Net 3+}
+
+        Some .nii files contain an extra dimension, making them 4D (e.g.,
+        512×512×49×4).
+
+        \begin{itemize}
+            \item How should we handle the extra dimension? Should we select a
+                specific channel, merge them, or treat them as separate inputs?
+
+            \item If selecting a single channel, which one is most relevant for
+                segmentation?
+
+            \item Should we preprocess 4D files differently from standard 3D volumes?
+        \end{itemize}
+
+        \textbf{How do we fairly compare this U-net 3+, with our multi-scaling
+        approach if we need to crop images differently/more in U-net 3+, than
+        our multi-scaling model approach, since then the different cropping seem
+        to hold a big factor for the final score.}
+    \end{numberedSlide}
+
+    % ----------------------------------------------------
+    %                       Slide 3
+    % ----------------------------------------------------
+    \begin{numberedSlide}{Questions?}
+        
+    \end{numberedSlide}
+
+\end{document}

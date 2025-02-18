@@ -19,7 +19,7 @@ jobs:
             if [[ -f "$dir/main.tex" ]]; then
               echo "🔍 Found main.tex in $dir"
               docker run --rm -v "$PWD/$dir:/work" --user "$(id -u):$(id -g)" -w /work texlive/texlive \
-                latexmk -xelatex -interaction=nonstopmode main.tex
+                latexmk -lualatex -interaction=nonstopmode main.tex
               mv "$dir/main.pdf" "$dir/weekly_meeting.pdf"
             else
               echo "⚠️ No main.tex found in $dir, skipping."

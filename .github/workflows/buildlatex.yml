@@ -15,6 +15,8 @@ jobs:
         with:
           token: ${{ secrets.TOKEN }}
 
+# ... keep the top parts unchanged ...
+
       - name: Find and compile all LaTeX documents
         run: |
           for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
@@ -22,15 +24,26 @@ jobs:
               echo "🔍 Found main.tex in $dir"
               abs_path=$(realpath "$dir")
               docker run --rm -v "$abs_path:/work" -w /work --user root texlive/texlive bash -c "
-                echo '🔄 Updating packages and installing fonts...'
-                apt-get update -qq && \
-                apt-get install -y --no-install-recommends software-properties-common && \
-                add-apt-repository universe && \
-                echo 'ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true' | debconf-set-selections && \
-                apt-get install -y --no-install-recommends ttf-mscorefonts-installer && \
-                fc-cache -fv && \
-                luaotfload-tool --update && \
-                echo '🛠️ Compiling document...' && \
+                echo '🔄 Setting up fonts...'
+                # First update existing packages
+                apt-get update -qq
+                
+                # Install essential font packages
+                apt-get install -y --no-install-recommends \
+                    fontconfig \
+                    wget \
+                    cabextract
+                
+                # Install Microsoft Core Fonts directly
+                mkdir -p /usr/share/fonts/truetype/msttcorefonts
+                wget -q -O /tmp/update-fonts https://raw.githubusercontent.com/Kwaaka/linux-auto-install-msfonts/master/update-msfonts
+                bash /tmp/update-fonts
+                
+                # Update font cache
+                fc-cache -fv
+                luaotfload-tool --update
+                
+                echo '🛠️ Compiling document...'
                 latexmk -lualatex -interaction=nonstopmode main.tex"
               mv "$dir/main.pdf" "$dir/weekly_meeting.pdf"
             else

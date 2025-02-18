@@ -3,8 +3,6 @@ on:
   push:
     paths-ignore:
       - "**/weekly_meeting.pdf"
-  schedule:
-    - cron: '0 22 * * *'
 
 jobs:
   build_latex:
@@ -17,11 +15,13 @@ jobs:
 
       - name: Find and compile all LaTeX documents
         run: |
-          for dir in $(find . -type d -name "week_*"); do
+          for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
             if [[ -f "$dir/main.tex" ]]; then
-              echo "Compiling LaTeX in $dir"
-              docker run --rm -v "$PWD/$dir:/work" --user "$(id -u):$(id -g)" texlive/texlive latexmk -pdf -interaction=nonstopmode main.tex
+              echo "🔍 Found main.tex in $dir"
+              docker run --rm -v "$PWD/$dir:/work" --user "$(id -u):$(id -g)" -w /work texlive/texlive latexmk -pdf -interaction=nonstopmode main.tex
               mv "$dir/main.pdf" "$dir/weekly_meeting.pdf"
+            else
+              echo "⚠️ No main.tex found in $dir, skipping."
             fi
           done
 

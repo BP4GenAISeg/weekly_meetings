@@ -1,3 +1,20 @@
+name: Build LaTeX documents
+on: 
+  push:
+    paths-ignore:
+      - "**/weekly_meeting.pdf"
+  schedule:
+    - cron: '0 22 * * *'
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.TOKEN }}
+
       - name: Find and compile all LaTeX documents
         run: |
           for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
@@ -16,3 +33,17 @@
               echo "⚠️ No main.tex found in $dir, skipping."
             fi
           done
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: Weekly Meetings PDFs
+          path: "**/weekly_meeting.pdf"
+
+      - name: Commit and push PDFs
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -f **/weekly_meeting.pdf
+          git commit -m "📄✨ docs: automatic update of weekly meeting documents ✨📄" || echo "No changes to commit"
+          git push || echo "No changes to push"

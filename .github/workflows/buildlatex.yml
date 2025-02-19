@@ -1,9 +1,12 @@
-name: Build All LaTeX Docs
+name: Build All LaTeX Files
 on:
   push:
+    # Only run when .tex files (etc.) change
+    paths:
+      - '**/*.tex'
+    # Ignore pushes that only change PDFs
     paths-ignore:
-      - paper.pdf
-
+      - '**/*.pdf'
 
 jobs:
   build_latex:

@@ -23,7 +23,7 @@ jobs:
       - name: Debug show main.tex
         run: cat week_2/main.tex
       - name: Debug show KUStyle.tex
-        run: cat week_2/KUStyle.sty
+        run: cat week_2/KUstyle.sty
 
       - name: Install TeX Live + latexmk
         run: |

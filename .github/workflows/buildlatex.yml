@@ -35,7 +35,8 @@ jobs:
           for texfile in $(find . -type f -path "./week_*" -name "main.tex"); do
             echo "Compiling $texfile"
             cd "$(dirname "$texfile")"
-            latexmk -lualatex -interaction=nonstopmode -halt-on-error -shell-escape "$texfile"
+            # Use only the filename in this directory
+            latexmk -lualatex -interaction=nonstopmode -halt-on-error -shell-escape "$(basename "$texfile")"
             cd -
           done
 

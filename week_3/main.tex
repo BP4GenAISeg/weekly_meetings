@@ -87,18 +87,25 @@
 
 
 \newenvironment{numberedSlide}[2][]{%
+  % Choose frame option
   \ifstrempty{#1}{%
-    % If no optional argument => just [hoved]
     \begin{frame}[hoved]
   }{%
-    % If there *is* an optional argument => [containsverbatim,hoved]
     \begin{frame}[#1,hoved]
   }%
   \incrementSlideCnt
-  \frametitle{#2 (\arabic{currentQSlide\thesubjectNumber}/\arabic{totalQSlide\thesubjectNumber})}
+  % Fallback check for totalQSlide
+  \frametitle{%
+    #2 \space
+    \ifcsname c@totalQSlide\thesubjectNumber\endcsname (\arabic{currentQSlide\thesubjectNumber}/\arabic{totalQSlide\thesubjectNumber})
+    \else
+      (\arabic{currentQSlide\thesubjectNumber}/?)
+    \fi
+  }
 }{%
   \end{frame}
 }
+
 
 
 %\newenvironment{numberedSlide}[1]{%

@@ -46,6 +46,8 @@ jobs:
             cd -
           done
 
+      - name: Debug List PDF files
+        run: find . -name "*.pdf" -print
 
       - name: Upload all generated PDFs
         uses: actions/upload-artifact@v4

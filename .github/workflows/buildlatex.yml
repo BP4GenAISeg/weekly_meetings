@@ -17,6 +17,8 @@ jobs:
 
 # ... keep the top parts unchanged ...
 
+# ... keep previous workflow sections unchanged ...
+
       - name: Find and compile all LaTeX documents
         run: |
           for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
@@ -24,27 +26,36 @@ jobs:
               echo "🔍 Found main.tex in $dir"
               abs_path=$(realpath "$dir")
               docker run --rm -v "$abs_path:/work" -w /work --user root texlive/texlive bash -c "
-                echo '🔄 Installing Arial fonts directly...'
-                # Install required utilities
-                apt-get update -qq && apt-get install -y wget unzip fontconfig
+                echo '🔄 Comprehensive font setup...'
+                # Install essential dependencies
+                apt-get update -qq && apt-get install -y \
+                    wget \
+                    unzip \
+                    fontconfig \
+                    libfreetype6 \
+                    lmodern
+
+                # Create TeX-specific font directory
+                mkdir -p /usr/local/texlive/texmf-local/fonts/truetype/arial
                 
-                # Create font directory
-                mkdir -p /usr/local/share/fonts/arial
-                
-                # Download and install Arial fonts
+                # Download and install Arial directly to TeX tree
                 wget -q -O /tmp/arial.zip https://github.com/rednoah/ttf-font-arial/archive/master.zip
                 unzip -q /tmp/arial.zip -d /tmp/
-                find /tmp/ttf-font-arial-master/ -name '*.ttf' -exec cp {} /usr/local/share/fonts/arial/ \;
+                find /tmp/ttf-font-arial-master/ -name '*.ttf' -exec cp {} /usr/local/texlive/texmf-local/fonts/truetype/arial/ \;
                 
-                # Update font caches and databases
-                fc-cache -fv
+                # Update TeX font databases
                 mktexlsr
+                updmap-sys --force --enable Map=arial.map
                 luaotfload-tool --update --force
+                fc-cache -fv
+
+                # Configure environment variables
+                export OSFONTDIR=/usr/local/texlive/texmf-local/fonts/:/usr/local/share/fonts/
                 
                 # Verify installation
-                echo '=== Installed fonts ==='
+                echo '=== System font list ==='
                 fc-list | grep -i arial
-                echo '=== Luaotfload font search ==='
+                echo '=== TeX font map ==='
                 luaotfload-tool --find='Arial'
                 
                 echo '🛠️ Compiling document...'

@@ -209,9 +209,15 @@ fill=green!20]
     % ----------------------------------------------------
     %                       Slide 3
     % ----------------------------------------------------
-    \begin{numberedSlide}{Questions?}
-        
-    \end{numberedSlide}
+\begin{numberedSlide}{Questions?}
+\begin{itemize}
+\item It seems like we have test data with images and labels and then validation data without labels. Why is that? Is it, because we need to get the individual score of each of the segmentation and average it out as the average dice score of all images?  
+
+\item We're unsure if we have to calculate the dice coefficient on the decoded segmentation and the mask? Since it doesn't seem like we have a mask in the validation part?
+
+\end{itemize}
+    
+\end{numberedSlide}
 
 
 \end{document}

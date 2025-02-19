@@ -17,6 +17,8 @@ jobs:
 
 # ... keep the top parts unchanged ...
 
+# ... keep the top parts unchanged ...
+
       - name: Find and compile all LaTeX documents
         run: |
           for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
@@ -24,25 +26,39 @@ jobs:
               echo "🔍 Found main.tex in $dir"
               abs_path=$(realpath "$dir")
               docker run --rm -v "$abs_path:/work" -w /work --user root texlive/texlive bash -c "
-                echo '🔄 Setting up fonts...'
-                # First update existing packages
+                echo '🔄 Setting up fonts and dependencies...'
+                # Update package lists
                 apt-get update -qq
                 
-                # Install essential font packages
+                # Install essential dependencies
                 apt-get install -y --no-install-recommends \
                     fontconfig \
                     wget \
-                    cabextract
-                
-                # Install Microsoft Core Fonts directly
-                mkdir -p /usr/share/fonts/truetype/msttcorefonts
-                wget -q -O /tmp/update-fonts https://raw.githubusercontent.com/Kwaaka/linux-auto-install-msfonts/master/update-msfonts
-                bash /tmp/update-fonts
-                
-                # Update font cache
+                    cabextract \
+                    xfonts-utils \
+                    libfreetype6 \
+                    libfontconfig1
+
+                # Install Microsoft Core Fonts using alternative method
+                wget -q https://sourceforge.net/projects/mscorefonts2/files/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
+                alien -i --scripts msttcore-fonts-installer-2.6-1.noarch.rpm
+                rm msttcore-fonts-installer-2.6-1.noarch.rpm
+
+                # Refresh font caches
                 fc-cache -fv
-                luaotfload-tool --update
-                
+                mktexlsr
+                luaotfload-tool --update --force
+
+                # Install required LaTeX packages
+                tlmgr install \
+                    fontspec \
+                    microtype \
+                    luaotfload \
+                    iftex \
+                    lm-math \
+                    pgf \
+                    beamer
+
                 echo '🛠️ Compiling document...'
                 latexmk -lualatex -interaction=nonstopmode main.tex"
               mv "$dir/main.pdf" "$dir/weekly_meeting.pdf"

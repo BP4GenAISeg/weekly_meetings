@@ -20,6 +20,10 @@ jobs:
           
       - name: Debug list files
         run: ls -R week_2
+      - name: Debug show main.tex
+        run: cat week_2/main.tex
+      - name: Debug show main.tex
+        run: cat week_2/KUStyle.sty
 
       - name: Install TeX Live + latexmk
         run: |

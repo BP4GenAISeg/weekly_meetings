@@ -8,6 +8,7 @@ on:
     paths-ignore:
       - '**/*.pdf'
 
+
 jobs:
   build_latex:
     runs-on: ubuntu-latest

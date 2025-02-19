@@ -43,7 +43,7 @@ jobs:
             cd "$(dirname "$texfile")"
             # Use only the filename in this directory
             latexmk -lualatex -interaction=nonstopmode -halt-on-error -shell-escape "$(basename "$texfile")"
-            cp ./main.pdf ./slides.pdf
+            mv ./main.pdf ./slide.pdf
             echo "Exit code from latexmk: $?"
             ls -l
             cd -
@@ -57,3 +57,11 @@ jobs:
         with:
           name: all_pdfs
           path: '**/*.pdf'
+
+      - name: Commit PDFs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add week_*/slide.pdf
+          git commit -m "Add built PDFs"
+          git push

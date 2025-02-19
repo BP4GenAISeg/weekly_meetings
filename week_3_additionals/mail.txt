@@ -1,0 +1,12 @@
+Hi Mustafa,
+
+We’re looking forward to our meeting tomorrow! However, we have to admit that we ended up focusing too much on our other course, as we had reports to complete there as well. Unfortunately, this meant that we didn’t allocate enough time to cloning the repository and training the model, which didn’t go as expected. We ran into a few issues, such as missing modules (Hydra), permissions for running Docker, and general setup problems, which prevented us from successfully training the model.
+
+We’ve attached a PDF to this email, and we were thinking of making this a weekly practice—sending you a document every Tuesday with prepared questions, updates, and results for the upcoming meeting. Of course, this is just for reference, and you’re not obligated to go through it if you don’t find it necessary. It’s simply meant to provide an overview in case it makes it easier for you to respond or follow along during the meeting.
+
+We sadly didn’t manage to do the task properly this week due to poor time management. We’ll make try to prioritize the bachelor project more moving forward.
+
+Looking forward to our discussion tomorrow!
+
+Best,
+Hjalte & Simon

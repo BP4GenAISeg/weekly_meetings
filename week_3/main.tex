@@ -26,33 +26,24 @@
 \definecolor{promptcolor}{RGB}{64,64,64} % Dark gray prompts
 
 % Custom style for Python code
-\lstdefinestyle{professionalPython}{
-    language=Python,
-    backgroundcolor=\color{bgcolor},
-    basicstyle=\linespread{1.1}\tiny\ttfamily,
-    keywordstyle=\color{keywordcolor}\bfseries,
-    commentstyle=\color{commentcolor}\itshape,
-    stringstyle=\color{stringcolor},
-    numberstyle=\tiny\color{numbercolor},
-    identifierstyle=\color{black},
-    tabsize=4,
-    showstringspaces=false,
-    numbers=left,
-    stepnumber=1,
-    numbersep=10pt,
-    frame=single,
-    framerule=0.5pt,
-    rulecolor=\color{gray},
-    breaklines=true,
-    captionpos=b,
-    xleftmargin=15pt,
-    xrightmargin=5pt,
-    aboveskip=10pt,
-    belowskip=-10pt,
-    morekeywords={def, return, class, from, import, as, if, elif, else, while, for, in, try, except, finally, with, yield, lambda, global, nonlocal, assert, pass, break, continue, raise},
-    literate=*{:}{{\textcolor{keywordcolor}{:}}}1,
-}
-
+\lstdefinestyle{professionalPython}{ language=Python, backgroundcolor=
+\color{bgcolor}
+, basicstyle=\linespread{1.1}\tiny\ttfamily, keywordstyle=
+\color{keywordcolor}
+\bfseries, commentstyle=
+\color{commentcolor}
+\itshape, stringstyle=
+\color{stringcolor}
+, numberstyle=\tiny
+\color{numbercolor}
+, identifierstyle=
+\color{black}
+, tabsize=4, showstringspaces=false, numbers=left, stepnumber=1, numbersep=10pt,
+frame=single, framerule=0.5pt, rulecolor=
+\color{gray}
+, breaklines=true, captionpos=b, xleftmargin=15pt, xrightmargin=5pt, aboveskip=10pt,
+belowskip=-10pt, morekeywords={def, return, class, from, import, as, if, elif, else, while, for, in, try, except, finally, with, yield, lambda, global, nonlocal, assert, pass, break, continue, raise},
+literate=*{:}{{\textcolor{keywordcolor}{:}}}1, }
 
 % -------------------------------------
 % Command with question slides counter
@@ -84,29 +75,18 @@
 \advance\@tempcnta by1 \repeat }
 \makeatother
 
-
-
 \newenvironment{numberedSlide}[2][]{%
-  % Choose frame option
-  \ifstrempty{#1}{%
-    \begin{frame}[hoved]
-  }{%
-    \begin{frame}[#1,hoved]
-  }%
-  \incrementSlideCnt
-  % Fallback check for totalQSlide
-  \frametitle{%
-    #2 \space
-    \ifcsname c@totalQSlide\thesubjectNumber\endcsname (\arabic{currentQSlide\thesubjectNumber}/\arabic{totalQSlide\thesubjectNumber})
-    \else
-      (\arabic{currentQSlide\thesubjectNumber}/?)
-    \fi
-  }
+% Choose frame option
+\ifstrempty{#1}{%
+\begin{frame}[hoved] }{%
+\begin{frame}[#1,hoved] }%
+\incrementSlideCnt
+% Fallback check for totalQSlide
+\frametitle{%
+#2 \space \ifcsname c@totalQSlide\thesubjectNumber\endcsname (\arabic{currentQSlide\thesubjectNumber}/\arabic{totalQSlide\thesubjectNumber})
+\else (\arabic{currentQSlide\thesubjectNumber}/?) \fi }
 }{%
-  \end{frame}
-}
-
-
+\end{frame} }
 
 %\newenvironment{numberedSlide}[1]{%
 %  \begin{frame}[hoved]
@@ -115,7 +95,6 @@
 %}{%
 %  \end{frame}
 %}
-
 
 % -------------------------------------
 %                Setup
@@ -158,66 +137,80 @@ fill=green!20]
 [thick,->,>=stealth]
 
 \begin{document}
-    % Intro slides.
-    { \setbeamertemplate{background}{\includegraphics[width=\paperwidth,height=\paperheight]{KU/forside.pdf}} \begin{frame}\begin{textblock*}{\textwidth}(0\textwidth,0.1\textheight) \begin{beamercolorbox}[wd=6.3cm,ht=7.7cm,sep=0.5cm]{hvidbox} \fontsize{4}{10}\fontfamily{ptm}\selectfont \textls[200]{UNIVERSITY OF COPENHAGEN} \noindent\textcolor{KUrod}{\rule{5.3cm}{0.4pt}}\end{beamercolorbox}\end{textblock*} \begin{textblock*}{\textwidth}(0\textwidth,0.1\textheight) \begin{beamercolorbox}[wd=6.3cm,sep=0.5cm]{hvidbox} \Large \textcolor{KUrod}{Meeting - Week \weekcount} \vspace{0.5cm} \par \large Progress, Challenges \& Next steps \vspace{0.5cm} \par \textcolor{gray}{\scriptsize Simon Winther \& Hjalte Bjoernstrup, Department of Computer Science, University of Copenhagen (DIKU), \today.}\end{beamercolorbox}\end{textblock*} \begin{textblock}{1}(6,11.44) \includegraphics[width=1cm]{KU/KU-logo.png}\end{textblock}\end{frame} }
+  % Intro slides.
+  { \setbeamertemplate{background}{\includegraphics[width=\paperwidth,height=\paperheight]{KU/forside.pdf}} \begin{frame}\begin{textblock*}{\textwidth}(0\textwidth,0.1\textheight) \begin{beamercolorbox}[wd=6.3cm,ht=7.7cm,sep=0.5cm]{hvidbox} \fontsize{4}{10}\fontfamily{ptm}\selectfont \textls[200]{UNIVERSITY OF COPENHAGEN} \noindent\textcolor{KUrod}{\rule{5.3cm}{0.4pt}}\end{beamercolorbox}\end{textblock*} \begin{textblock*}{\textwidth}(0\textwidth,0.1\textheight) \begin{beamercolorbox}[wd=6.3cm,sep=0.5cm]{hvidbox} \Large \textcolor{KUrod}{Meeting - Week \weekcount} \vspace{0.5cm} \par \large Progress, Challenges \& Next steps \vspace{0.5cm} \par \textcolor{gray}{\scriptsize Simon Winther \& Hjalte Bjoernstrup, Department of Computer Science, University of Copenhagen (DIKU), \today.}\end{beamercolorbox}\end{textblock*} \begin{textblock}{1}(6,11.44) \includegraphics[width=1cm]{KU/KU-logo.png}\end{textblock}\end{frame} }
 
-    % ----------------------------------------------------
-    %                       Slide 1
-    % ----------------------------------------------------
-    \begin{numberedSlide}{Questions?} 
-        Should we train a separate model for each organ (e.g., liver, brain, prostate) to maximize specialization, or would a single model trained on all datasets generalize well across different organs? Alternatively, would pretraining on multiple organs and fine-tuning per organ be a better approach?
+  % ----------------------------------------------------
+  %                       Slide 1
+  % ----------------------------------------------------
+  \begin{numberedSlide}
+    [allowframebreaks]{Questions?}
+    \begin{enumerate}
+      \item When processing a 3D medical image stored as a \texttt{.NII} file, we
+        obtain a set of 49 two-dimensional images of resolution $512 \times 512$.
+        How does this representation relate to a true 3D representation? We think
+        this is what is causing some confusion for us—what exactly do these 49 slices
+        represent? They look very similar, and it does not seem like they capture
+        different perspectives of the brain or tumor. Rather, it seems like the medical
+        image is just shifting slightly, which makes it difficult to fully
+        understand where the 3D aspect comes into play. Because the way that we've
+        understood it was that, for example, the MRI slices could be moving from
+        top to bottom, with each slice capturing a specific layer of the brain
+        at that depth. In the end, stacking all slices together would form a
+        complete volumetric 3D representation of the brain, and so why would the
+        input channel not be the whole \textbf{49 channels}?
+
+      \item Given that each \texttt{.NII} file produces a sequence of 2D slices,
+        what exactly does each slice represent in a 3D context? Does the stack
+        of 2D slices reconstruct a volumetric image, or is additional processing
+        required? We know that you mentioned that maybe we should move to a
+        standard 3D U-Net, but we are a bit confused as to why U-Net 3+ is not
+        considered 3D. If the input has three slices (or three channels), what
+        makes it strictly 2D? This distinction is a key part of our confusion.
+
+      \item If U-Net 3+ takes only three input channels per pass, how does this limit
+        its ability to fully utilize the 3D information present in the dataset?
+        Would a fully 3D input require taking all 49 slices at once, forming a $5
+        12 \times 512 \times 49$ input tensor? (\textbf{this overlaps with
+        Question 1}). The reason why we are asking this is that you suggested we
+        should go for a standard 3D U-Net, with multiscale (multiresolution),
+        deep supervision and plain skip connections leaving out the fullscale
+        skip connections included in the unet3p framework. In this case, if we
+        took the entire $512 \times 512 \times 49$ as input (i.e., all 49 slices
+        as channels), would that then be considered fully 3D, or is there
+        another aspect that makes a model fundamentally 3D? This connects with our
+        confusion in questions one and two.
+
+      \item There was some confusion in the group regarding the definitions of certain
+        terms. The full-scale skip connections refer to the concatenation of
+        encoder outputs to lower-resolution decoder layers, whereas in a standard
+        U-Net, skip connections link encoder and decoder layers at the same
+        depth (e.g., depth 0 in the encoder connects to depth 0 in the decoder,
+        depth 1 to depth 1, etc.). \textbf{Is this correctly understood?}
+
         \\~\\
-        The LiTS preprocessing script resizes images to 320×320 and creates three-channel
-        inputs using neighboring slices.
-        \begin{itemize}
-            \item Should we crop/resize our dataset to match this format, or can
-                we keep the original resolution?
 
-            \item How should we handle three-channel input if the number of slices
-                is not a multiple of 3?
+        The multi-scaling mechanism, however, is entirely separate from the full-scale
+        skip connection. We are removing the full-scale skip connections
+        completely because they introduce additional complexity. Instead, the
+        multi-scaling approach we want to implement is based on multi-resolution
+        learning. The idea is that at different depths, the network should be
+        able to predict what the appropriate input channels should look like. For
+        example, at a depth of 256, then at a depth of 128, the input should be
+        adjusted accordingly. Since each convolutional layer with pooling operations
+        changes the number of channels based on the kernel sizes and pooling factors,
+        we aim to train a neural network to predict the lower-resolution
+        features that would best match the expected structure at each depth. This
+        way, we can retain meaningful features across different resolutions
+        without relying on full-scale skip connections. \textbf{Is this also a
+        correct understanding?}
 
-            \item Are there any strict formatting requirements we need to follow
-                for U-Net 3+?
-        \end{itemize}
-    \end{numberedSlide}
-
-    % ----------------------------------------------------
-    %                       Slide 2
-    % ----------------------------------------------------
-    \begin{numberedSlide}{Questions?} 
-        \textbf{Handling 4D NIfTI Files in U-Net 3+}
-
-        Some .nii files contain an extra dimension, making them 4D (e.g.,
-        512×512×49×4).
-
-        \begin{itemize}
-            \item How should we handle the extra dimension? Should we select a
-                specific channel, merge them, or treat them as separate inputs?
-
-            \item If selecting a single channel, which one is most relevant for
-                segmentation?
-
-            \item Should we preprocess 4D files differently from standard 3D volumes?
-        \end{itemize}
-
-        \textbf{How do we fairly compare this U-net 3+, with our multi-scaling
-        approach if we need to crop images differently/more in U-net 3+, than
-        our multi-scaling model approach, since then the different cropping seem
-        to hold a big factor for the final score.}
-    \end{numberedSlide}
-
-    % ----------------------------------------------------
-    %                       Slide 3
-    % ----------------------------------------------------
-\begin{numberedSlide}{Questions?}
-\begin{itemize}
-\item It seems like we have test data with images and labels and then validation data without labels. Why is that? Is it, because we need to get the individual score of each of the segmentation and average it out as the average dice score of all images?  
-
-\item We're unsure if we have to calculate the dice coefficient on the decoded segmentation and the mask? Since it doesn't seem like we have a mask in the validation part?
-
-\end{itemize}
-    
-\end{numberedSlide}
-
-
+      \item If you still believe it would be best for us to switch to a completely
+        different 3D U-Net model, do you have a specific GitHub repository or
+        paper in mind that you could share? We would like to review it first to better
+        understand the differences. Additionally, would such a model take all slices
+        at once as input (i.e., $512 \times 512 \times 49$), or how should we
+        process the dataset is where the confusion lies as mentioned above.
+    \end{enumerate}
+  \end{numberedSlide}
 \end{document}

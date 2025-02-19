@@ -17,8 +17,6 @@ jobs:
 
 # ... keep the top parts unchanged ...
 
-# ... keep the top parts unchanged ...
-
       - name: Find and compile all LaTeX documents
         run: |
           for dir in $(find . -maxdepth 1 -type d -name "week_*"); do
@@ -26,39 +24,29 @@ jobs:
               echo "🔍 Found main.tex in $dir"
               abs_path=$(realpath "$dir")
               docker run --rm -v "$abs_path:/work" -w /work --user root texlive/texlive bash -c "
-                echo '🔄 Setting up fonts and dependencies...'
-                # Update package lists
-                apt-get update -qq
+                echo '🔄 Installing Arial fonts directly...'
+                # Install required utilities
+                apt-get update -qq && apt-get install -y wget unzip fontconfig
                 
-                # Install essential dependencies
-                apt-get install -y --no-install-recommends \
-                    fontconfig \
-                    wget \
-                    cabextract \
-                    xfonts-utils \
-                    libfreetype6 \
-                    libfontconfig1
-
-                # Install Microsoft Core Fonts using alternative method
-                wget -q https://sourceforge.net/projects/mscorefonts2/files/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
-                alien -i --scripts msttcore-fonts-installer-2.6-1.noarch.rpm
-                rm msttcore-fonts-installer-2.6-1.noarch.rpm
-
-                # Refresh font caches
+                # Create font directory
+                mkdir -p /usr/local/share/fonts/arial
+                
+                # Download and install Arial fonts
+                wget -q -O /tmp/arial.zip https://github.com/rednoah/ttf-font-arial/archive/master.zip
+                unzip -q /tmp/arial.zip -d /tmp/
+                find /tmp/ttf-font-arial-master/ -name '*.ttf' -exec cp {} /usr/local/share/fonts/arial/ \;
+                
+                # Update font caches and databases
                 fc-cache -fv
                 mktexlsr
                 luaotfload-tool --update --force
-
-                # Install required LaTeX packages
-                tlmgr install \
-                    fontspec \
-                    microtype \
-                    luaotfload \
-                    iftex \
-                    lm-math \
-                    pgf \
-                    beamer
-
+                
+                # Verify installation
+                echo '=== Installed fonts ==='
+                fc-list | grep -i arial
+                echo '=== Luaotfload font search ==='
+                luaotfload-tool --find='Arial'
+                
                 echo '🛠️ Compiling document...'
                 latexmk -lualatex -interaction=nonstopmode main.tex"
               mv "$dir/main.pdf" "$dir/weekly_meeting.pdf"
@@ -66,8 +54,6 @@ jobs:
               echo "⚠️ No main.tex found in $dir, skipping."
             fi
           done
-
-
 
       - name: Upload PDFs
         uses: actions/upload-artifact@v4

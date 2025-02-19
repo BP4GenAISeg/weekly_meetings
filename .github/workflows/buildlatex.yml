@@ -28,7 +28,13 @@ jobs:
       - name: Install TeX Live + latexmk
         run: |
           sudo apt-get install -y texlive-full latexmk
-
+      
+      - name: Install Microsoft fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ttf-mscorefonts-installer
+          sudo fc-cache -fv
+      
       - name: Compile all main.tex in subfolders
         run: |
           # Find every 'main.tex' in week_* directories

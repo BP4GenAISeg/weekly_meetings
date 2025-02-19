@@ -1,8 +1,6 @@
 name: Build All LaTeX Files
 on:
   push:
-    paths:
-      - '**/*.tex'
     paths-ignore:
       - '**/*.pdf'
 

@@ -31,12 +31,14 @@ jobs:
 
       - name: Compile all main.tex in subfolders
         run: |
-          # Search for every 'main.tex' inside week_* directories (plus top-level if needed).
+          # Find every 'main.tex' in week_* directories
           for texfile in $(find . -type f -path "./week_*" -name "main.tex"); do
             echo "Compiling $texfile"
-            # Adjust engine (lualatex / pdflatex) if needed:
-            latexmk -lualatex -pdf -interaction=nonstopmode -halt-on-error -shell-escape "$texfile"
+            cd "$(dirname "$texfile")"
+            latexmk -lualatex -pdf -interaction=nonstopmode -halt-on-error -shell-escape "$(basename "$texfile")"
+            cd -
           done
+
 
       - name: Upload all generated PDFs
         uses: actions/upload-artifact@v4

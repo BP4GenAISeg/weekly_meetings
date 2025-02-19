@@ -43,6 +43,7 @@ jobs:
             cd "$(dirname "$texfile")"
             # Use only the filename in this directory
             latexmk -lualatex -interaction=nonstopmode -halt-on-error -shell-escape "$(basename "$texfile")"
+            cp ./main.pdf ./slides.pdf
             echo "Exit code from latexmk: $?"
             ls -l
             cd -

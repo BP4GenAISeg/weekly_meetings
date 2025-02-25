@@ -164,60 +164,58 @@ fill=green!20]
     % ----------------------------------------------------
     %                       Slide 1
     % ----------------------------------------------------
-    \begin{numberedSlide}{Questions?} 
-        Should we train a separate model for each organ (e.g., liver, brain, prostate) to maximize specialization, or would a single model trained on all datasets generalize well across different organs? Alternatively, would pretraining on multiple organs and fine-tuning per organ be a better approach?
-        \\~\\
-        The LiTS preprocessing script resizes images to 320×320 and creates three-channel
-        inputs using neighboring slices.
-        \begin{itemize}
-            \item Should we crop/resize our dataset to match this format, or can
-                we keep the original resolution?
+    \begin{numberedSlide}[containsverbatim]{Questions?} 
+            
+             \begin{itemize}
+                \item can we just change 3 => 49 and in theory it could work for 3D? 
+                    \begin{lstlisting}[style=professionalPython]
+""" Encoder """
+self.e1 = encoder_block(3, 64)
+self.e2 = encoder_block(64, 128)
+self.e3 = encoder_block(128, 256)
+self.e4 = encoder_block(256, 512)
+            \end{lstlisting}
+            \vspace{1em}
 
-            \item How should we handle three-channel input if the number of slices
-                is not a multiple of 3?
+                \item We also have a lot of dependency problem, since it from at least 4 years ago, where most of the code was build and was wondering if any realistic way to find their dependencies versions? or if it wouldn't just be easier to just create it ourself from scratch?
 
-            \item Are there any strict formatting requirements we need to follow
-                for U-Net 3+?
-        \end{itemize}
+                
+                
+             \end{itemize}
+            
+            
+            
     \end{numberedSlide}
 
-    % ----------------------------------------------------
-    %                       Slide 2
-    % ----------------------------------------------------
-    \begin{numberedSlide}{Questions?} 
-        \textbf{Handling 4D NIfTI Files in U-Net 3+}
 
-        Some .nii files contain an extra dimension, making them 4D (e.g.,
-        512×512×49×4).
+       \begin{numberedSlide}[containsverbatim]{Questions?} 
+            
+             \begin{itemize}
+                \item This is the whole network, how do we create a whole new network from this, it seem very inflexible. (multiscaling)
+                    \begin{lstlisting}[style=professionalPython]
+net = DynUNet(
+        spatial_dims=3,
+        in_channels=in_channels,
+        out_channels=n_class,
+        kernel_size=kernels,
+        strides=strides,
+        upsample_kernel_size=strides[1:],
+        norm_name="instance",
+        deep_supervision=True,
+        deep_supr_num=deep_supr_num[task_id],
+    )
+            \end{lstlisting}
+            \vspace{1em}
 
-        \begin{itemize}
-            \item How should we handle the extra dimension? Should we select a
-                specific channel, merge them, or treat them as separate inputs?
+               
 
-            \item If selecting a single channel, which one is most relevant for
-                segmentation?
-
-            \item Should we preprocess 4D files differently from standard 3D volumes?
-        \end{itemize}
-
-        \textbf{How do we fairly compare this U-net 3+, with our multi-scaling
-        approach if we need to crop images differently/more in U-net 3+, than
-        our multi-scaling model approach, since then the different cropping seem
-        to hold a big factor for the final score.}
+                
+                
+             \end{itemize}
+            
+            
+            
     \end{numberedSlide}
-
-    % ----------------------------------------------------
-    %                       Slide 3
-    % ----------------------------------------------------
-\begin{numberedSlide}{Questions?}
-\begin{itemize}
-\item It seems like we have test data with images and labels and then validation data without labels. Why is that? Is it, because we need to get the individual score of each of the segmentation and average it out as the average dice score of all images?  
-
-\item We're unsure if we have to calculate the dice coefficient on the decoded segmentation and the mask? Since it doesn't seem like we have a mask in the validation part?
-
-\end{itemize}
-    
-\end{numberedSlide}
 
 
 \end{document}
